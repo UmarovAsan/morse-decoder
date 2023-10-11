@@ -38,8 +38,38 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-    // write your solution here
+    const point = '.';
+    const dash = '-';
+    const space = ' ';
+    let result = '';
+    
+    const codedWords = expr.split('**********');
+
+    for (const word of codedWords) {
+        const wordLetters = word.match(/.{1,10}/g);
+        const decodedWord = wordLetters
+            .map(letter => {
+                if (letter === '**********') {
+                    return space;
+                }
+
+                const trimmedLetter = letter.replace(/^0+/, '');
+                
+                const morseCode = trimmedLetter
+                    .replace(/10/g, point)
+                    .replace(/11/g, dash);
+
+                return MORSE_TABLE[morseCode];
+                
+            })
+            .join('');
+
+        result += decodedWord + space;
+    }
+
+    return result.trim();
 }
+
 
 module.exports = {
     decode
